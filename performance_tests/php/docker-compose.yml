@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  web:
+      image: "no_dbms_use_files/php/webserver"
+      build:
+          context: webserver
+  mariadb:
+      image: "mariadb"
+
