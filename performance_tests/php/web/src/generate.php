@@ -51,4 +51,3 @@ for ($i=1;$i<=CONFIG_NUMBER_ENTRIES;$i++) {
 $mysqli->close();
 
 echo ($i-1)." hotels generated";
-
