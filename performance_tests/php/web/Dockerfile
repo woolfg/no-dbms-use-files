@@ -12,6 +12,7 @@ EXPOSE 80
 RUN rm -fR /var/www/html/*
 
 COPY init.sh /
+RUN chmod u+x /init.sh
 COPY src /var/www/html
 
 CMD ["/init.sh"]

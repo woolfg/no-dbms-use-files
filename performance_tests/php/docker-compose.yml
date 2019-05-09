@@ -2,9 +2,19 @@ version: '3'
 
 services:
   web:
-      image: "no_dbms_use_files/php/webserver"
-      build:
-          context: webserver
+    image: "no_dbms_use_files/php/web"
+    build:
+        context: web
+    ports:
+        - "8080:80"    
+    volumes:
+        - ./web/src:/var/www/html
+    environment:
+          - MYSQL_HOST=mariadb
+          - MYSQL_PORT=3306
+          - MYSQL_USER=root
+          - MYSQL_PASSWORD=rootdbpassword        
   mariadb:
-      image: "mariadb"
-
+    image: "mariadb"
+    environment:
+        - MYSQL_ROOT_PASSWORD=rootdbpassword
