@@ -11,11 +11,15 @@ build: ## Build the Docker images
 
 .PHONY: run
 run: ## Build the Docker images
-	docker-compose up
+	docker-compose up -d
 
 .PHONY: stop
 stop: ## Stop all containers
 	docker-compose stop  
+
+.PHONY: builddata
+builddata: ## generates the hotels in the db and files
+	wget -O- http://localhost:8080/generate.php
 
 .PHONY: bash
 bash: ## Open a shell inside the web container
@@ -23,19 +27,27 @@ bash: ## Open a shell inside the web container
 
 .PHONY: attack-db
 attack-db: ## Attacks the db version
-	@echo 'GET http://localhost:8080/fetch_db.php' | vegeta attack -rate 300 -duration 10s | vegeta report	
+	docker run --network="host" --rm -i peterevans/vegeta sh -c "echo 'GET http://localhost:8080/fetch_db.php' | vegeta attack -rate 300 -duration 10s | vegeta report"	
 
 .PHONY: attack-file
 attack-file: ## Attacks the file version
-	@echo 'GET http://localhost:8080/fetch_file.php' | vegeta attack -rate 300 -duration 10s | vegeta report	
+	docker run --network="host" --rm -i peterevans/vegeta sh -c "echo 'GET http://localhost:8080/fetch_file.php' | vegeta attack -rate 300 -duration 10s | vegeta report"	
 
 .PHONY: warm-db
-warm-db: attack-db attack-db ## Warms the DB cache by running two attacks
+warm-db: ## Warms the DB cache by running two attacks
+	$(MAKE) attack-db
+	$(MAKE) attack-db
+	@echo "============"
 	@echo "DB WARMED"
+	@echo "============"
 
 .PHONY: warm-file
-warm-file: attack-file attack-file ## Warms the file cache by running two attacks
+warm-file: ## Warms the file cache by running two attacks
+	$(MAKE) attack-file
+	$(MAKE) attack-file
+	@echo "============"
 	@echo "FILES WARMED"
+	@echo "============"
 
 .PHONY: attack
-attack: warm-db attack-db warm-file attack-file ## Open a shell inside the web container
+attack: warm-db attack-db warm-file attack-file ## warm and attack both variations
