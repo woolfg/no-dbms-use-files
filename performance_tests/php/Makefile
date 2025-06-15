@@ -17,6 +17,13 @@ run: ## Build the Docker images
 stop: ## Stop all containers
 	docker compose stop  
 
+.PHONY: clean
+clean: stop ## Stop and remove all containers incl volumes
+	docker compose down --volumes --remove-orphans
+	@echo "============"
+	@echo "CONTAINERS REMOVED"
+	@echo "============"
+
 .PHONY: builddata
 builddata: ## generates the hotels in the db and files
 	wget -O- http://localhost:8080/generate.php
@@ -32,6 +39,10 @@ attack-db: ## Attacks the db version
 .PHONY: attack-file
 attack-file: ## Attacks the file version
 	docker run --network="host" --rm -i peterevans/vegeta sh -c "echo 'GET http://localhost:8080/fetch_file.php' | vegeta attack -rate 300 -duration 10s | vegeta report"	
+
+.PHONY: attack-sqlite
+attack-sqlite: ## Attacks the sqlite version
+	docker run --network="host" --rm -i peterevans/vegeta sh -c "echo 'GET http://localhost:8080/fetch_sqlite.php' | vegeta attack -rate 300 -duration 10s | vegeta report"	
 
 .PHONY: warm-db
 warm-db: ## Warms the DB cache by running two attacks
@@ -49,5 +60,13 @@ warm-file: ## Warms the file cache by running two attacks
 	@echo "FILES WARMED"
 	@echo "============"
 
+.PHONY: warm-sqlite
+warm-sqlite: ## Warms the SQLite cache by running two attacks
+	$(MAKE) attack-sqlite
+	$(MAKE) attack-sqlite
+	@echo "============"
+	@echo "SQLITE WARMED"
+	@echo "============"
+
 .PHONY: attack
-attack: warm-db attack-db warm-file attack-file ## warm and attack both variations
+attack: warm-db attack-db warm-file attack-file warm-sqlite attack-sqlite ## warm and attack all variations (db, file, sqlite)
