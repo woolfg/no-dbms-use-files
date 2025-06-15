@@ -1,7 +1,7 @@
 <?php
 
 function getRandomEntryID() {
-    return rand(1,CONFIG_NUMBER_ENTRIES);
+    return random_int(1, CONFIG_NUMBER_ENTRIES);
 }
 
 function generateRandomIDList($count) {

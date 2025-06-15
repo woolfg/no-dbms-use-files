@@ -7,15 +7,15 @@ help: ## This help message
 
 .PHONY: build
 build: ## Build the Docker images
-	docker-compose build
+	docker compose build
 
 .PHONY: run
 run: ## Build the Docker images
-	docker-compose up -d
+	docker compose up -d
 
 .PHONY: stop
 stop: ## Stop all containers
-	docker-compose stop  
+	docker compose stop  
 
 .PHONY: builddata
 builddata: ## generates the hotels in the db and files
@@ -23,7 +23,7 @@ builddata: ## generates the hotels in the db and files
 
 .PHONY: bash
 bash: ## Open a shell inside the web container
-	docker-compose exec web bash
+	docker compose exec web bash
 
 .PHONY: attack-db
 attack-db: ## Attacks the db version
