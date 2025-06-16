@@ -26,7 +26,7 @@ clean: stop ## Stop and remove all containers incl volumes
 
 .PHONY: builddata
 builddata: ## generates the hotels in the db and files
-	wget -O- http://localhost:8080/generate.php
+	curl http://localhost:8080/generate.php
 
 .PHONY: bash
 bash: ## Open a shell inside the web container

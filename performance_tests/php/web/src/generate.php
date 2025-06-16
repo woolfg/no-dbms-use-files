@@ -1,28 +1,74 @@
 <?php
 
+// Increase execution time limit for data generation
+set_time_limit(300); // 5 minutes
+
 require_once('config.php');
 
-function generateHotelPHPCode($id) {
-    return "<?php return array(
-        'id'=>$id,
-        'name'=>'hotel $id',
-        'features'=>array('pool','wifi','24hreception'));";
+function generateRandomString($length) {
+    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 .,!?;:-()[]{}';
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, strlen($characters) - 1)];
+    }
+    return $randomString;
 }
 
-function generateHotelSQL($id) {
-    return sprintf(
-        'INSERT INTO data.data (id,name,pool,wifi,24reception) VALUES (%d,"%s",1,1,1);',
-        $id,
-        "hotel $id"
+function generateEntryData($id) {
+    return array(
+        'id' => $id,
+        'name' => "hotel $id",
+        'field1' => generateRandomString(rand(200, 800))
     );
 }
 
-function generateHotelSQLite($id) {
-    return sprintf(
-        'INSERT INTO data (id,name,pool,wifi,24reception) VALUES (%d,"%s",1,1,1);',
-        $id,
-        "hotel $id"
+function saveToFile($data, $id) {
+    $phpCode = "<?php return array(
+        'id'=>{$data['id']},
+        'name'=>'{$data['name']}',
+        'features'=>array('pool','wifi','24hreception'),
+        'field1'=>'" . addslashes($data['field1']) . "');";
+    file_put_contents(CONFIG_DATA_PATH."/".$id, $phpCode);
+}
+
+function saveToMySQL($data, $mysqli) {
+    $sqlQuery = sprintf(
+        'INSERT INTO data.data (id,name,pool,wifi,h24reception,field1) VALUES (%d,"%s",1,1,1,"%s");',
+        $data['id'],
+        $data['name'],
+        addslashes($data['field1'])
     );
+    $mysqli->query($sqlQuery);
+}
+
+function saveToSQLite($data, $pdo) {
+    $sqliteQuery = sprintf(
+        'INSERT INTO data (id,name,pool,wifi,h24reception,field1) VALUES (%d,"%s",1,1,1,"%s");',
+        $data['id'],
+        $data['name'],
+        addslashes($data['field1'])
+    );
+    $pdo->exec($sqliteQuery);
+}
+
+// Function to count entries in files
+function files_count() {
+    $files = glob(CONFIG_DATA_PATH . '/*');
+    return count($files);
+}
+
+// Function to count entries in MySQL
+function mysql_count($mysqli) {
+    $result = $mysqli->query("SELECT COUNT(*) as count FROM data.data");
+    $row = $result->fetch_assoc();
+    return $row['count'];
+}
+
+// Function to count entries in SQLite
+function sqlite_count($pdo) {
+    $stmt = $pdo->query("SELECT COUNT(*) as count FROM data");
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row['count'];
 }
 
 if (!is_dir(CONFIG_DATA_PATH)) {
@@ -44,7 +90,8 @@ $mysqli->query("CREATE TABLE IF NOT EXISTS data.data (
     name VARCHAR(100),
     pool TINYINT,
     wifi TINYINT,
-    24reception TINYINT
+    h24reception TINYINT,
+    field1 TEXT
 );");
 
 if ($mysqli->connect_errno) {
@@ -64,7 +111,8 @@ try {
         name TEXT,
         pool INTEGER,
         wifi INTEGER,
-        24reception INTEGER
+        h24reception INTEGER,
+        field1 TEXT
     )");
     
     // Clear existing data
@@ -76,17 +124,25 @@ try {
 
 // Generate data for all three storage methods
 for ($i=1;$i<=CONFIG_NUMBER_ENTRIES;$i++) {
-    // Generate file
-    file_put_contents(CONFIG_DATA_PATH."/".$i,generateHotelPHPCode($i));
+    // Generate the data once per entry to ensure consistency across all storage methods
+    $entryData = generateEntryData($i);
     
-    // Insert into MySQL
-    $mysqli->query(generateHotelSQL($i));
-    
-    // Insert into SQLite
-    $pdo->exec(generateHotelSQLite($i));
+    // Save to all three storage methods with the same data
+    saveToFile($entryData, $i);
+    saveToMySQL($entryData, $mysqli);
+    saveToSQLite($entryData, $pdo);
 }
 
+// Get counts before closing connections
+$files_count = files_count();
+$mysql_count = mysql_count($mysqli);
+$sqlite_count = sqlite_count($pdo);
+
+// Close connections
 $mysqli->close();
 $pdo = null;
 
-echo ($i-1)." hotels generated for files, MySQL, and SQLite";
+echo ($i-1)." hotels generated for files, MySQL, and SQLite\n";
+echo "Files: {$files_count} entries\n";
+echo "MySQL: {$mysql_count} entries\n";
+echo "SQLite: {$sqlite_count} entries\n";

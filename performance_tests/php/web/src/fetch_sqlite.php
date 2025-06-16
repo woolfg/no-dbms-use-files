@@ -29,13 +29,14 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $features = array();
 
     if ($row['wifi']) { $features[] = "wifi"; }
-    if ($row['24reception']) { $features[] = "24reception"; }
+    if ($row['h24reception']) { $features[] = "24reception"; }
     if ($row['pool']) { $features[] = "pool"; }
 
     $data[] = array(
         'id'=>$row['id'],
         'name'=>$row['name'],
-        'features' => $features
+        'features' => $features,
+        'field1'=>$row['field1']
     );
 }
 
