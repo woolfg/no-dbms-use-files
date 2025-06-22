@@ -46,26 +46,32 @@ attack-sqlite: ## Attacks the sqlite version
 
 .PHONY: warm-db
 warm-db: ## Warms the DB cache by running two attacks
+	@echo ""
+	@echo "Warming up the DB cache..."
 	$(MAKE) attack-db
 	$(MAKE) attack-db
 	@echo "============"
-	@echo "DB WARMED"
+	@echo "DB WARMED - Final test will start"
 	@echo "============"
 
 .PHONY: warm-file
 warm-file: ## Warms the file cache by running two attacks
+	@echo ""
+	@echo "Warming up the file cache..."
 	$(MAKE) attack-file
 	$(MAKE) attack-file
 	@echo "============"
-	@echo "FILES WARMED"
+	@echo "FILES WARMED - Final test will start"
 	@echo "============"
 
 .PHONY: warm-sqlite
 warm-sqlite: ## Warms the SQLite cache by running two attacks
+	@echo ""
+	@echo "Warming up the SQLite cache..."
 	$(MAKE) attack-sqlite
 	$(MAKE) attack-sqlite
 	@echo "============"
-	@echo "SQLITE WARMED"
+	@echo "SQLITE WARMED - Final test will start"
 	@echo "============"
 
 .PHONY: attack
