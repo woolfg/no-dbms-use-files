@@ -1,0 +1,117 @@
+make attack-db
+make[1]: Entering directory '/home/woolf/projects/no-dbms-use-files/performance_tests/node'
+Attacking the DB version after warming up...
+docker run --network="host" --rm -i peterevans/vegeta sh -c "echo 'GET http://localhost:8081/fetch_db' | vegeta attack -rate 300 -duration 10s | vegeta report"	
+Requests      [total, rate, throughput]         3000, 300.10, 300.05
+Duration      [total, attack, wait]             9.998s, 9.997s, 1.704ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  991.218µs, 2.485ms, 1.674ms, 4.218ms, 6.511ms, 19.769ms, 33.195ms
+Bytes In      [total, mean]                     17682303, 5894.10
+Bytes Out     [total, mean]                     0, 0.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:3000  
+Error Set:
+make[1]: Leaving directory '/home/woolf/projects/no-dbms-use-files/performance_tests/node'
+make attack-db
+make[1]: Entering directory '/home/woolf/projects/no-dbms-use-files/performance_tests/node'
+Attacking the DB version after warming up...
+docker run --network="host" --rm -i peterevans/vegeta sh -c "echo 'GET http://localhost:8081/fetch_db' | vegeta attack -rate 300 -duration 10s | vegeta report"	
+Requests      [total, rate, throughput]         3000, 300.10, 300.06
+Duration      [total, attack, wait]             9.998s, 9.997s, 1.51ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  934.201µs, 2.271ms, 1.546ms, 2.913ms, 5.342ms, 22.176ms, 41.981ms
+Bytes In      [total, mean]                     17678504, 5892.83
+Bytes Out     [total, mean]                     0, 0.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:3000  
+Error Set:
+make[1]: Leaving directory '/home/woolf/projects/no-dbms-use-files/performance_tests/node'
+============
+DB WARMED
+============
+Attacking the DB version after warming up...
+docker run --network="host" --rm -i peterevans/vegeta sh -c "echo 'GET http://localhost:8081/fetch_db' | vegeta attack -rate 300 -duration 10s | vegeta report"	
+Requests      [total, rate, throughput]         3000, 300.10, 300.06
+Duration      [total, attack, wait]             9.998s, 9.997s, 1.369ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  952.225µs, 2.075ms, 1.485ms, 2.191ms, 5.129ms, 20.655ms, 33.994ms
+Bytes In      [total, mean]                     17702938, 5900.98
+Bytes Out     [total, mean]                     0, 0.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:3000  
+Error Set:
+make attack-memory
+make[1]: Entering directory '/home/woolf/projects/no-dbms-use-files/performance_tests/node'
+Attacking the memory version after warming up...
+docker run --network="host" --rm -i peterevans/vegeta sh -c "echo 'GET http://localhost:8081/fetch_memory' | vegeta attack -rate 300 -duration 10s | vegeta report"	
+Requests      [total, rate, throughput]         3000, 300.10, 300.08
+Duration      [total, attack, wait]             9.997s, 9.997s, 716.753µs
+Latencies     [min, mean, 50, 90, 95, 99, max]  215.965µs, 735.984µs, 689.818µs, 902.392µs, 948.621µs, 1.098ms, 24.346ms
+Bytes In      [total, mean]                     17671340, 5890.45
+Bytes Out     [total, mean]                     0, 0.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:3000  
+Error Set:
+make[1]: Leaving directory '/home/woolf/projects/no-dbms-use-files/performance_tests/node'
+make attack-memory
+make[1]: Entering directory '/home/woolf/projects/no-dbms-use-files/performance_tests/node'
+Attacking the memory version after warming up...
+docker run --network="host" --rm -i peterevans/vegeta sh -c "echo 'GET http://localhost:8081/fetch_memory' | vegeta attack -rate 300 -duration 10s | vegeta report"	
+Requests      [total, rate, throughput]         3000, 300.10, 300.08
+Duration      [total, attack, wait]             9.997s, 9.997s, 695.173µs
+Latencies     [min, mean, 50, 90, 95, 99, max]  239.95µs, 669µs, 663.014µs, 890.095µs, 932.997µs, 1.018ms, 2.144ms
+Bytes In      [total, mean]                     17660715, 5886.90
+Bytes Out     [total, mean]                     0, 0.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:3000  
+Error Set:
+make[1]: Leaving directory '/home/woolf/projects/no-dbms-use-files/performance_tests/node'
+============
+MEMORY WARMED
+============
+Attacking the memory version after warming up...
+docker run --network="host" --rm -i peterevans/vegeta sh -c "echo 'GET http://localhost:8081/fetch_memory' | vegeta attack -rate 300 -duration 10s | vegeta report"	
+Requests      [total, rate, throughput]         3000, 300.10, 300.08
+Duration      [total, attack, wait]             9.997s, 9.997s, 695.013µs
+Latencies     [min, mean, 50, 90, 95, 99, max]  227.506µs, 551.641µs, 530.019µs, 750.61µs, 835.942µs, 972.757µs, 2.105ms
+Bytes In      [total, mean]                     17686362, 5895.45
+Bytes Out     [total, mean]                     0, 0.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:3000  
+Error Set:
+make attack-sqlite
+make[1]: Entering directory '/home/woolf/projects/no-dbms-use-files/performance_tests/node'
+Attacking the SQLite version after warming up...
+docker run --network="host" --rm -i peterevans/vegeta sh -c "echo 'GET http://localhost:8081/fetch_sqlite' | vegeta attack -rate 300 -duration 10s | vegeta report"	
+Requests      [total, rate, throughput]         3000, 300.10, 300.07
+Duration      [total, attack, wait]             9.998s, 9.997s, 1.154ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  527.289µs, 1.03ms, 990.973µs, 1.271ms, 1.387ms, 1.735ms, 3.545ms
+Bytes In      [total, mean]                     17744135, 5914.71
+Bytes Out     [total, mean]                     0, 0.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:3000  
+Error Set:
+make[1]: Leaving directory '/home/woolf/projects/no-dbms-use-files/performance_tests/node'
+make attack-sqlite
+make[1]: Entering directory '/home/woolf/projects/no-dbms-use-files/performance_tests/node'
+Attacking the SQLite version after warming up...
+docker run --network="host" --rm -i peterevans/vegeta sh -c "echo 'GET http://localhost:8081/fetch_sqlite' | vegeta attack -rate 300 -duration 10s | vegeta report"	
+Requests      [total, rate, throughput]         3000, 300.10, 300.08
+Duration      [total, attack, wait]             9.997s, 9.997s, 817.152µs
+Latencies     [min, mean, 50, 90, 95, 99, max]  529.923µs, 996.679µs, 957.58µs, 1.202ms, 1.287ms, 1.612ms, 4.057ms
+Bytes In      [total, mean]                     17697068, 5899.02
+Bytes Out     [total, mean]                     0, 0.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:3000  
+Error Set:
+make[1]: Leaving directory '/home/woolf/projects/no-dbms-use-files/performance_tests/node'
+============
+SQLITE WARMED
+============
+Attacking the SQLite version after warming up...
+docker run --network="host" --rm -i peterevans/vegeta sh -c "echo 'GET http://localhost:8081/fetch_sqlite' | vegeta attack -rate 300 -duration 10s | vegeta report"	
+Requests      [total, rate, throughput]         3000, 300.10, 300.07
+Duration      [total, attack, wait]             9.998s, 9.997s, 883.707µs
+Latencies     [min, mean, 50, 90, 95, 99, max]  539.922µs, 1.034ms, 993.95µs, 1.264ms, 1.389ms, 1.67ms, 3.552ms
+Bytes In      [total, mean]                     17677266, 5892.42
+Bytes Out     [total, mean]                     0, 0.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      200:3000  
+Error Set:
